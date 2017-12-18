@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "#'@name ab\n#'@rdname ab\n#'@aliases\n#'ab\n#'ab.cdf\n#'ab.pdf\n#'\n#'@title ab\n#'@description\n#'AB function is a core type function.\n#'\\cr\n#'It's CDF formula is: y = (x - a) / b\n#'\\cr\n#'It's PDF formula is: y = 1/b\n#'\n#'@param x Vector of x parametres\n#'@param a linear parameter\n#'@param b nominater parameter\n#'\n#'@return Vector of result vaues\nNULL\n#'@rdname ab\n#'@export\nab <- function(x, a, b) {\n  UseMethod(\"ab\")\n}\n#'@rdname ab\n#'@export\nab.cdf <- function(x, a=NULL, b=NULL) {\n  if(is.null(b) && length(a) > 1){\n    params <- a\n    a=params[1]\n    b=params[2]\n  }\n  return((x - a) / b)\n}\n#'@rdname ab\n#'@export\nab.pdf <- function(x, a=NULL, b=NULL){\n  if(is.null(b) && length(a) > 1){\n    params <- a\n    a=params[1]\n    b=params[2]\n  }\n  return (1 / b)\n}\n",
+    "created" : 1513625397858.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1245550295",
+    "id" : "F25E5D35",
+    "lastKnownWriteTime" : 1513634119,
+    "last_content_update" : 1513634119405,
+    "path" : "~/Bakalarka/PsyMet/R/ab.R",
+    "project_path" : "R/ab.R",
+    "properties" : {
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "#'PSfunction\n#'\n#'Provides the frame for psycometrics functions. Combines the sigmoid and core function.\n#'@param type specifies, whether function is CDF of PDF type\n#'@param gama sets the loves boundary of function\n#'@param lambda sets the highes boundary of function\n#'@param sigmoid determines the sigmoid of the fuction\n#'@param core dermines the core of the function\n#'@param x the vector of level values\n#'@param ... specifies the parametres or core function\n#'@return vector of return values\n#'@export\nPSfunction <- function(gamma, lambda, sigmoid, core, x, ..., type=\"cdf\"){\n\n  if(gamma <0 || lambda < 0) {stop(\"Gamma and lambda must be a least 0\")}\n  if(type==\"cdf\" || type == \"CDF\"){\n    class(x) <- \"cdf\"\n\n    xp <-  do.call(core, c(list(x), list(...)))\n\n    y <- (1 - gamma - lambda) * do.call(sigmoid, list(x))\n    class(y) <- NULL\n    return(y)\n  }\n  else if(type==\"pdf\" || type == \"PDF\"){\n    class(x) <- \"cdf\"\n    xs <- do.call(core, list(list(x), list(...)))\n    class(xs) <- \"pdf\"\n\n    class(x) <- \"pdf\"\n    xp <- do.call(core, list(list(x), list(...)))\n\n    y <- (1 - gamma - lambda) * do.call(sigmoid, list(xs)) * xp\n    class(y) <- NULL\n\n    return(y)\n  } else {\n    stop(\"invalid function type, must be rather cdf of pdf\")\n  }\n}\n",
+    "created" : 1513550088386.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3696501203",
+    "id" : "6F53970F",
+    "lastKnownWriteTime" : 1513550765,
+    "last_content_update" : 1513550765788,
+    "path" : "~/Bakalarka/PsyMet/R/PSfunction.R",
+    "project_path" : "R/PSfunction.R",
+    "properties" : {
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

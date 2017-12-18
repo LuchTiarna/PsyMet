@@ -1,0 +1,21 @@
+{
+    "collab_server" : "",
+    "contents" : "#TODO\n#\n#fitting function\n#multi generate\n#multi fit\n",
+    "created" : 1513580420409.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3028844938",
+    "id" : "FE98E5A3",
+    "lastKnownWriteTime" : 1513583783,
+    "last_content_update" : 1513583783287,
+    "path" : "~/Bakalarka/PsyMet/R/TODO.R",
+    "project_path" : "R/TODO.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
