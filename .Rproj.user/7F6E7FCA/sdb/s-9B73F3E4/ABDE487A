@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "#data visualization\nfitDataVisualization <- unnest(fitDat, data)\n\n\nplot <- ggplot(data=fitDataVisualization)\nplot <- plot + geom_line( mapping=aes(x=level, y=hitPercentage))\nplot <- plot + geom_line( mapping=aes(x=level, y=fitedHitPercentage), colour=\"red\")\nplot <- plot + geom_point( mapping=aes(x=level, y=simulatedHitPercentage))\nplot <- plot + geom_point( mapping=aes(x=treshold, y=PSfunction(gamma, lambda, sigmoid, core, treshold, param1, param2)), colour=\"green\")\nplot <- plot + geom_point( mapping=aes(x=fitTreshold, y=PSfunction(fitGamma, fitLambda, fitSigmoid, fitCore, fitTreshold, fitParam1, fitParam2)), colour=\"yellow\")\nplot <- plot + facet_grid(fitSigmoid + fitCore~sigmoid + core + gamma + lambda + param1 + param2)\nplot\n\n",
+    "created" : 1518640431200.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "344686274",
+    "id" : "ABDE487A",
+    "lastKnownWriteTime" : 1519050352,
+    "last_content_update" : 1519050352325,
+    "path" : "~/Bakalarka/PsyMet/R/scripts/dataVisualisation.R",
+    "project_path" : "R/scripts/dataVisualisation.R",
+    "properties" : {
+    },
+    "relative_order" : 5,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

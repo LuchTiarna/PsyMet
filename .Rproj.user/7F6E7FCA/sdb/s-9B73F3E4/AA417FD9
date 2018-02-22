@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "#Data generation\n\nx <- log(1:5/1.2)\n\n#Multigenerate\ndat <- multigenerate(list(c(\"gumbel_r\",\"ab\", 0, 0, 0.5, 1),\n                          c(\"gumbel_l\",\"ab\", 0, 0, 0.5, 1),\n                          c(\"gauss\",\"linear\", 0, 0, 0.5, 1),\n                          c(\"logistic\",\"linear\", 0, 0, 0.5, 1))\n\n\n                     , x, rep(30,length(x)))\n\n#Multifit\nfitDat <-  multifit(dat, list(c(\"gumbel_l\", \"ab\"), c(\"gauss\", \"linear\"), c(\"logistic\", \"ab\"), c(\"gumbel_l\", \"weibull\")))\n\n#filtering unimpropriate data\nfitDat <- fitDat %>% filter(fitGamma + fitLambda < 1)\n#treshold estimate\nfitDat <- fitDat %>% group_by(sigmoid, core, gamma, lambda, param1, param2, fitSigmoid, fitCore, fitGamma, fitLambda, fitParam1, fitParam2) %>% mutate(treshold=PSfunction(gamma, lambda, sigmoid, core, 0.5, param1, param2, inverse = TRUE))\n#slope\nfitDat <- fitDat %>% group_by(sigmoid, core, gamma, lambda, param1, param2, fitSigmoid, fitCore, fitGamma, fitLambda, fitParam1, fitParam2) %>% mutate(slope=PSfunction(gamma, lambda, sigmoid, core, treshold, param1, param2, type=\"pdf\"))\n#treshold estimate\nfitDat <- fitDat %>% group_by(sigmoid, core, gamma, lambda, param1, param2, fitSigmoid, fitCore, fitGamma, fitLambda, fitParam1, fitParam2) %>% mutate(fitTreshold=PSfunction(fitGamma, fitLambda, fitSigmoid, fitCore, 0.5, fitParam1, fitParam2, inverse = TRUE))\n#slope\nfitDat <- fitDat %>% group_by(sigmoid, core, gamma, lambda, param1, param2, fitSigmoid, fitCore, fitGamma, fitLambda, fitParam1, fitParam2) %>% mutate(fitSlope=PSfunction(fitGamma, fitLambda, fitSigmoid, fitCore, fitTreshold, fitParam1, fitParam2, type=\"pdf\"))\n#number of levels\nfidDat <- fitDat %>% group_by(sigmoid, core, gamma, lambda, param1, param2, fitSigmoid, fitCore, fitGamma, fitLambda, fitParam1, fitParam2) %>% mutate(numberOfLevels=nrow(data))\n#number of observations\n#number of observations per level\n",
+    "created" : 1518640428351.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3868333033",
+    "id" : "AA417FD9",
+    "lastKnownWriteTime" : 1519204430,
+    "last_content_update" : 1519204430923,
+    "path" : "~/Bakalarka/PsyMet/R/scripts/dataGeneration.R",
+    "project_path" : "R/scripts/dataGeneration.R",
+    "properties" : {
+    },
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

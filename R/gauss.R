@@ -24,12 +24,32 @@ gauss <- function(x) {
 }
 #'@rdname gauss
 #'@export
-gauss.cdf <- function(x){
+gauss.orig <- function(x) {
+  UseMethod("gauss.orig")
+}
+#'@rdname gauss
+#'@export
+gauss.inverse <- function(x) {
+  UseMethod("gauss.inverse")
+}
+#'@rdname gauss
+#'@export
+gauss.orig.cdf <- function(x){
   return(pnorm(x, mean = 0, sd = 1, log=FALSE))
 }
 #'
 #'@rdname gauss
 #'@export
-gauss.pdf <- function(x){
+gauss.orig.pdf <- function(x){
   return(exp(-x^2/2) / (2*pi)^(1/2))
+}
+#'@rdname gauss
+#'@export
+gauss.inverse.cdf <- function(x){
+  return(qnorm(x, mean = 0, sd = 1, log=FALSE))
+}
+#'@rdname gauss
+#'@export
+gauss.inverse.pdf <- function(x){
+  return(1/gauss.orig.pdf(x))
 }

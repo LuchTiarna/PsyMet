@@ -2,34 +2,19 @@
     "debugBreakpointsState" : {
         "breakpoints" : [
             {
-                "editor_line_number" : 17,
+                "editor_line_number" : 12,
                 "editor_state" : 1,
-                "function_name" : "PSfunction",
-                "function_steps" : "3,3,2",
-                "id" : 3,
+                "function_name" : "toplevel",
+                "function_steps" : "",
+                "id" : 28,
                 "is_package_breakpoint" : false,
-                "is_pending_debug_completion" : true,
-                "line_number" : 17,
+                "is_pending_debug_completion" : false,
+                "line_number" : 12,
                 "needs_updated_steps" : false,
                 "package_name" : "",
-                "path" : "~/Bakalarka/PsyMet/R/PSfunction.R",
+                "path" : "~/Bakalarka/PsyMet/R/Help.R",
                 "state" : 1,
-                "type" : 0
-            },
-            {
-                "editor_line_number" : 25,
-                "editor_state" : 1,
-                "function_name" : "ab",
-                "function_steps" : "2",
-                "id" : 4,
-                "is_package_breakpoint" : true,
-                "is_pending_debug_completion" : false,
-                "line_number" : 25,
-                "needs_updated_steps" : false,
-                "package_name" : "PsyMet",
-                "path" : "~/Bakalarka/PsyMet/R/ab.R",
-                "state" : 1,
-                "type" : 0
+                "type" : 1
             }
         ]
     }

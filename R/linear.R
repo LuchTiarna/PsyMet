@@ -27,11 +27,51 @@ linear <- function(x, a, b) {
 }
 #'@rdname linear
 #'@export
-linear.cdf <- function(x, a, b) {
+linear.orig <- function(x, a, b) {
+  UseMethod("linear.orig")
+}
+#'@rdname linear
+#'@export
+linear.inverse <- function(x, a, b) {
+  UseMethod("linear.inverse")
+}
+#'@rdname linear
+#'@export
+linear.orig.cdf <- function(x, a=NULL, b=NULL) {
+  if(is.null(b) && length(a) > 1){
+    params <- a
+    a=as.double(params[1])
+    b=as.double(params[2])
+  }
   return(a * x + b)
 }
 #'@rdname linear
 #'@export
-linear.pdf <- function(x, a, b) {
+linear.orig.pdf <- function(x, a=NULL, b=NULL) {
+  if(is.null(b) && length(a) > 1){
+    params <- a
+    a=as.double(params[1])
+    b=as.double(params[2])
+  }
   return(a)
+}
+#'@rdname linear
+#'@export
+linear.inverse.cdf <- function(x, a=NULL, b=NULL) {
+  if(is.null(b) && length(a) > 1){
+    params <- a
+    a=as.double(params[1])
+    b=as.double(params[2])
+  }
+  return((x - b)/a)
+}
+#'@rdname linear
+#'@export
+linear.inverse.pdf <- function(x, a=NULL, b=NULL) {
+  if(is.null(b) && length(a) > 1){
+    params <- a
+    a=as.double(params[1])
+    b=as.double(params[2])
+  }
+  return(1/a)
 }

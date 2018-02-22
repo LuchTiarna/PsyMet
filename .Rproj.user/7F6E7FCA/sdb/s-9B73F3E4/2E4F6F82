@@ -1,0 +1,21 @@
+{
+    "collab_server" : "",
+    "contents" : "#'PSfunction\n#'\n#'Provides the frame for psycometrics functions. Combines the sigmoid and core function.\n#'@param type specifies, whether function is CDF of PDF type\n#'@param gama sets the loves boundary of function\n#'@param lambda sets the highes boundary of function\n#'@param sigmoid determines the sigmoid of the fuction\n#'@param core dermines the core of the function\n#'@param x the vector of level values\n#'@param ... specifies the parametres or core function\n#'@return vector of return values\n#'@export\nPSfunction <- function(gamma, lambda, sigmoid, core, x, ... , type=\"cdf\", inverse=FALSE){\n  gamma <-  as.double(gamma)\n  lambda <- as.double(lambda)\n\n  if(gamma < 0) {stop(\"Gamma must be a least 0.\")}\n  if(lambda < 0) {stop(\"Lambda must be a least 0.\")}\n  if((gamma + lambda) > 1) {stop(\"Summ of gamma and lambda must be lesser than 1.\")}\n\n  if(is.character(sigmoid)){\n    sigmoidName <- sigmoid\n  }else{\n    sigmoidName <- as.character(substitute(sigmoid))\n  }\n\n  if(is.character(core)){\n    coreName <- core\n  }else{\n    coreName <- as.character(substitute(core))\n  }\n\n  if(!inverse){\n    sigmoidName <- paste(sigmoidName, \"orig\",sep=\".\")\n    coreName <- paste(coreName, \"orig\",sep=\".\")\n  }else{\n    sigmoidName <- paste(sigmoidName, \"inverse\",sep=\".\")\n    coreName <- paste(coreName, \"inverse\",sep=\".\")\n  }\n\n  if(tolower(type)==\"cdf\"){\n    coref <- function(){eval(body(paste(coreName , \".cdf\", sep=\"\")))}\n    formals(coref) <- formals(coreName)\n\n    sigmoidf <- function(){eval(body(paste(sigmoidName, \".cdf\", sep=\"\")))}\n    formals(sigmoidf) <- formals(sigmoidName)\n\n    if(!inverse){\n      y <- gamma + (1 - gamma - lambda) * sigmoidf(coref(x, ...))\n    }else{\n      y <- coref(sigmoidf((x-gamma)/(1-lambda-gamma)), ...)\n    }\n\n  }else if(tolower(type)==\"pdf\"){\n    coref <- function(){eval(body(paste(coreName, \".cdf\", sep=\"\")))}\n    formals(coref) <- formals(coreName)\n\n    corePdf <- function(){eval(body(paste(coreName, \".pdf\", sep=\"\")))}\n    formals(corePdf) <- formals(coreName)\n\n    sigmoidf <- function(){eval(body(paste(sigmoidName, \".cdf\", sep=\"\")))}\n    formals(sigmoidf) <- formals(sigmoidName)\n\n    sigmoidPdf <- function(){eval(body(paste(sigmoidName, \".pdf\", sep=\"\")))}\n    formals(sigmoidPdf) <- formals(sigmoidName)\n\n    if(!inverse){\n      y <- gamma + (1 - gamma - lambda) * sigmoidPdf(coref(x, ...))*corePdf(x, ...)\n    }else{\n      adjustedX <- x-gamma/(1-lambda-gamma)\n      y <- corePdf(sigmoidf(adjustedX), ...)*sigmoidPdf(adjustedX)\n      y <- y/(1-lambda-gamma)\n    }\n\n  } else {\n    stop(\"invalid function type, must be either cdf or pdf\")\n  }\n    return(y)\n}\n",
+    "created" : 1519156978306.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3889139731",
+    "id" : "2E4F6F82",
+    "lastKnownWriteTime" : 1519051482,
+    "last_content_update" : 1519051482,
+    "path" : "~/Bakalarka/PsyMet/R/PSfunction.R",
+    "project_path" : "R/PSfunction.R",
+    "properties" : {
+        "source_window_id" : ""
+    },
+    "relative_order" : 6,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

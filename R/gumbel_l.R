@@ -25,16 +25,32 @@ gumbel_l <- function(x) {
 }
 #'@rdname gumbel_l
 #'@export
-gumbel_l.cdf <- function(x) {
+gumbel_l.orig <- function(x) {
+  UseMethod("gumbel_l.orig")
+}
+#'@rdname gumbel_l
+#'@export
+gumbel_l.inverse <- function(x) {
+  UseMethod("gumbel_l.orig")
+}
+#'@rdname gumbel_l
+#'@export
+gumbel_l.orig.cdf <- function(x) {
   return(1 - exp(- exp(x)))
 }
 #'
 #'@rdname gumbel_l
 #'@export
-gumbel_l.pdf <- function(x) {
+gumbel_l.orig.pdf <- function(x) {
   return(exp(- exp(x) + x))
 }
-
-
-
-
+#'@rdname gumbel_l
+#'@export
+gumbel_l.inverse.cdf <- function(x) {
+  return(log(-log(1 - x)))
+}
+#'@rdname gumbel_l
+#'@export
+gumbel_l.inverse.pdf <- function(x) {
+  return(1 / ((x-1)*log(1-x)))
+}

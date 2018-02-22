@@ -26,11 +26,51 @@ weibull <- function(x, m, s) {
 }
 #'@rdname weibull
 #'@export
-weibull.cdf <- function(x, m, s) {
+weibull.orig <- function(x, m, s) {
+  UseMethod("weibull.orig")
+}
+#'@rdname weibull
+#'@export
+weibull.inverse <- function(x, m, s) {
+  UseMethod("weibull.inverse")
+}
+#'@rdname weibull
+#'@export
+weibull.orig.cdf <- function(x, m=NULL, s=NULL) {
+  if(is.null(s) && length(m) > 1){
+    params <- m
+    m=as.double(params[1])
+    s=as.double(params[2])
+  }
   return(2*m*s*(log(x) - log(m)) / log(2) + log(log(2)))
 }
 #'@rdname weibull
 #'@export
-weibull.pdf <- function(x, m, s) {
+weibull.orig.pdf <- function(x, m=NULL, s=NULL) {
+  if(is.null(s) && length(m) > 1){
+    params <- m
+    m=as.double(params[1])
+    s=as.double(params[2])
+  }
   return(2*m*s/log(2)/x)
+}
+#'@rdname weibull
+#'@export
+weibull.inverse.cdf <- function(x, m=NULL, s=NULL) {
+  if(is.null(s) && length(m) > 1){
+    params <- m
+    m=as.double(params[1])
+    s=as.double(params[2])
+  }
+  return(exp(log(2)/(2*m*s)*(x - log(log(2))) + log(m)))
+}
+#'@rdname weibull
+#'@export
+weibull.inverse.pdf <- function(x, m=NULL, s=NULL) {
+  if(is.null(s) && length(m) > 1){
+    params <- m
+    m=as.double(params[1])
+    s=as.double(params[2])
+  }
+  return(exp(log(2)/(2*m*s)*(x - log(log(2))) + log(m))*log(2)/(2*m*s))
 }

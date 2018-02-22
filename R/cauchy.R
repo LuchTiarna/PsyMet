@@ -16,6 +16,7 @@
 #'
 #'@return Vector of result vaues
 NULL
+
 #'@rdname cauchy
 #'@export
 cauchy <- function(x) {
@@ -23,15 +24,31 @@ cauchy <- function(x) {
 }
 #'@rdname cauchy
 #'@export
-cauchy.cdf <- function(x) {
-  return(atan(x) / pi + 0.5)
+cauchy.orig <- function(x) {
+  UseMethod("cauchy.orig")
 }
-#'
 #'@rdname cauchy
 #'@export
-cauchy.pdf <- function(x) {
+cauchy.inverse <- function(x) {
+  UseMethod("cauchy.inverse")
+}
+#'@rdname cauchy
+#'@export
+cauchy.orig.cdf <- function(x) {
+  return(atan(x) / pi + 0.5)
+}
+#'@rdname cauchy
+#'@export
+cauchy.orig.pdf <- function(x) {
   return( 1/ (1 + x^2) / pi)
 }
-
-
-
+#'@rdname cauchy
+#'@export
+cauchy.inverse.cdf <- function(x) {
+  return(tan((x - 0.5)* pi))
+}
+#'@rdname cauchy
+#'@export
+cauchy.inverse.pdf <- function(x) {
+  return(1/(cos((x-0.5) * pi) ^ 2))
+}

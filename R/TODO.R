@@ -1,5 +1,4 @@
 #TODO
-#
-#fitting function
-#multi generate
-#multi fit
+#add tidyverse as dependence
+#inversion !!!
+#note:Knoblauch psychometric function R package

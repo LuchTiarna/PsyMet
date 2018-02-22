@@ -24,11 +24,31 @@ logistic <- function(x) {
 }
 #'@rdname logistic
 #'@export
-logistic.cdf <- function(x) {
+logistic.orig <- function(x) {
+  UseMethod("logistic.orig")
+}
+#'@rdname logistic
+#'@export
+logistic.inverse <- function(x) {
+  UseMethod("logistic.inverse")
+}
+#'@rdname logistic
+#'@export
+logistic.orig.cdf <- function(x) {
   return(1 / ( 1 + exp(-x)))
 }
 #'@rdname logistic
 #'@export
-logistic.pdf <- function(x) {
+logistic.orig.pdf <- function(x) {
   return(exp(x) / ( 1 + exp(x))^2 )
+}
+#'@rdname logistic
+#'@export
+logistic.inverse.cdf <- function(x) {
+  return(-log(1/x -1))
+}
+#'@rdname logistic
+#'@export
+logistic.inverse.pdf <- function(x) {
+  return((x*(x -1)))
 }

@@ -25,11 +25,51 @@ logy <- function(x, a, b) {
 }
 #'@rdname logy
 #'@export
-logy.cdf <- function(x, a, b) {
+logy.orig <- function(x, a, b) {
+  UseMethod("logy.orig")
+}
+#'@rdname logy
+#'@export
+logy.inverse <- function(x, a, b) {
+  UseMethod("logy.inverse")
+}
+#'@rdname logy
+#'@export
+logy.orig.cdf <- function(x, a=NULL, b=NULL) {
+  if(is.null(b) && length(a) > 1){
+    params <- a
+    a=as.double(params[1])
+    b=as.double(params[2])
+  }
   return(a * log(x) + b)
 }
 #'@rdname logy
 #'@export
-logy.pdf <- function(x, a, b) {
+logy.orig.pdf <- function(x, a=NULL, b=NULL) {
+  if(is.null(b) && length(a) > 1){
+    params <- a
+    a=as.double(params[1])
+    b=as.double(params[2])
+  }
   return(a / x)
+}
+#'@rdname logy
+#'@export
+logy.inverse.cdf <- function(x, a=NULL, b=NULL) {
+  if(is.null(b) && length(a) > 1){
+    params <- a
+    a=as.double(params[1])
+    b=as.double(params[2])
+  }
+  return(exp((x-b)/a))
+}
+#'@rdname logy
+#'@export
+logy.inverse.pdf <- function(x, a=NULL, b=NULL) {
+  if(is.null(b) && length(a) > 1){
+    params <- a
+    a=as.double(params[1])
+    b=as.double(params[2])
+  }
+  return(exp((x-b)/a)*(x/a))
 }

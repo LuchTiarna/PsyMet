@@ -24,12 +24,32 @@ exponential <- function(x) {
 }
 #'@rdname exponential
 #'@export
-exponential.cdf <- function(x) {
+exponential.orig <- function(x) {
+  UseMethod("exponential.orig")
+}
+#'@rdname exponential
+#'@export
+exponential.inverse <- function(x) {
+  UseMethod("exponential.inverse")
+}
+#'@rdname exponential
+#'@export
+exponential.orig.cdf <- function(x) {
   return(1 - exp(-x))
 }
 #'
 #'@rdname exponential
 #'@export
-exponential.pdf <- function(x) {
+exponential.orig.pdf <- function(x) {
   return(exp(-x))
+}
+#'@rdname exponential
+#'@export
+exponential.inverse.cdf <- function(x) {
+  return(- log(1-x))
+}
+#'@rdname exponential
+#'@export
+exponential.inverse.pdf <- function(x) {
+  return(1 / (1-x))
 }
