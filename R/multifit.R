@@ -70,6 +70,7 @@ multifit <- function(fitted, fitters)
       }
 
       responses <- unnest(fitted[n,], data)
+      responses <- responses[complete.cases(responses),]
       responses$fitedHitPercentage <- predict(fit, responses$level)
 
       responses$id <- rep(id, nrow(responses))

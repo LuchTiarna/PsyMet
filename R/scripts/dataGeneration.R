@@ -1,18 +1,23 @@
 #Data generation
 
-x <- c(-log(2:5/1.2),log(1:5/1.2))
+x <- c(-log(seq(2,10,2)),log(seq(2,10,2)), 0)
 
 #Multigenerate
-dat <- multigenerate(list(c("gumbel_r","ab", 0, 0, 0.5, 1),
-                          c("gumbel_l","weibull", 0, 0, 0.5, 1),
-                          c("gauss","linear", 0, 0, 0.5, -0.5),
-                          c("logistic","linear", 0, 0, 0.5, 0.5))
+dat <- multigenerate(list(c("gumbel_r","ab", 0, 0, -0.5, 0.5),
+                          c("gumbel_l","weibull", 0, 0,0.75, 2),
+                          c("gauss","linear", 0, 0, 2, -0.5),
+                          c("logistic","linear", 0, 0, 2, 0.5))
                      , x, rep(30,length(x)),
-                     100
+                     10
                      )
 
 #Multifit
-fitDat <-  multifit(dat, list(c("gumbel_l", "ab"), c("gauss", "linear"), c("logistic", "ab"), c("gumbel_l", "weibull")))
+fitDat <-  multifit(dat, list(c("gumbel_r", "ab"),
+                              c("gauss", "linear"),
+                              c("gauss", "linear"),
+                              c("logistic", "linear")
+                              )
+                    )
 
 #filtering unimpropriate data
 fitDat <- fitDat %>% filter(fitGamma + fitLambda < 1)
@@ -41,5 +46,4 @@ for(i in 1:nrow(fitDat)){
   #mean distance of treshold and level
   tres <- fitDat[i,]$treshold[[1]]
   fitDat[i,]$meanTresholdLevelDistance <- mean(abs(dat$level - tres))
-
 }
