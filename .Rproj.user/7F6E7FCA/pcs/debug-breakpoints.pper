@@ -15,6 +15,21 @@
                 "path" : "~/Bakalarka/PsyMet/R/Help.R",
                 "state" : 1,
                 "type" : 1
+            },
+            {
+                "editor_line_number" : 75,
+                "editor_state" : 1,
+                "function_name" : "multifit",
+                "function_steps" : "5,4,2,4,15",
+                "id" : 29,
+                "is_package_breakpoint" : true,
+                "is_pending_debug_completion" : false,
+                "line_number" : 75,
+                "needs_updated_steps" : false,
+                "package_name" : "PsyMet",
+                "path" : "~/Bakalarka/PsyMet/R/multifit.R",
+                "state" : 1,
+                "type" : 0
             }
         ]
     }

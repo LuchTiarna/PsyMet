@@ -7,8 +7,9 @@
 #'Generates multiple functions with multiple parametres on same data you are able to adjust noise properties.
 #'
 #'@param origins lists of functions and their parametres
-#'@param levels  levels stimuli
-#'@param trials
+#'@param levels  levels os stimulus
+#'@param trials  numbers of trials on each level of stimulus
+#'@param examplesPerFunction number of simulated sessions per one origin function, implicit value is 1
 #'
 #'@return data.frame with all values with distinguished origin functions and their parametres
 NULL
@@ -16,7 +17,7 @@ NULL
 #'@export
 #'
 #'
-multigenerate <- function(origins, levels, trials)
+multigenerate <- function(origins, levels, trials, examplesPerFunction=1)
 {
   if(!is.list(origins)){
     stop("Origins has to be a list.")
@@ -52,25 +53,28 @@ multigenerate <- function(origins, levels, trials)
     hits <- gama + (1 - gama - lambda) * do.call(paste(sigmoidName, ".orig.cdf", sep=""), list(xc))
 
     responses <- data.frame(level = levels, obsNumber = trials, hitPercentage = hits)
-    simulatedResp <- simulateResponse(responses)
-    simulatedResp <- processResponses(simulatedResp)
-    responses$simulatedHitPercentage <- simulatedResp$hitPercentage
 
-    responses$sigmoid <-  rep(func[1],nrow(responses))
-    responses$core <-  rep(func[2],nrow(responses))
-    responses$gamma <- rep(as.double(func[3]), nrow(responses))
-    responses$lambda <- rep(as.double(func[4]), nrow(responses))
-    for(i in 5:length(func))
-    {
-       responses[[paste("param", as.character(i-4), sep="")]] <-  rep(as.double(func[i]), nrow(responses))
-    }
+    for(i in 1:examplesPerFunction){
+      simulatedResp <- simulateResponse(responses)
+      simulatedResp <- processResponses(simulatedResp)
+      responses$simulatedHitPercentage <- simulatedResp$hitPercentage
 
-    if(is.null(results))
-    {
-      results <- nest(responses, c(level, obsNumber, hitPercentage, simulatedHitPercentage))
-    }else{
-      row <- nest(responses, c(level, obsNumber, hitPercentage, simulatedHitPercentage))
-      results <- bind_rows(results, row)
+      responses$sigmoid <-  rep(func[1],nrow(responses))
+      responses$core <-  rep(func[2],nrow(responses))
+      responses$gamma <- rep(as.double(func[3]), nrow(responses))
+      responses$lambda <- rep(as.double(func[4]), nrow(responses))
+      for(i in 5:length(func))
+      {
+        responses[[paste("param", as.character(i-4), sep="")]] <-  rep(as.double(func[i]), nrow(responses))
+      }
+
+      if(is.null(results))
+      {
+        results <- nest(responses, c(level, obsNumber, hitPercentage, simulatedHitPercentage))
+      }else{
+        row <- nest(responses, c(level, obsNumber, hitPercentage, simulatedHitPercentage))
+        results <- bind_rows(results, row)
+      }
     }
   }
   return(results)

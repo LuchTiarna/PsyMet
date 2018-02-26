@@ -1,0 +1,29 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1519389705090.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "1C46A1F4",
+    "lastKnownWriteTime" : 349190576,
+    "last_content_update" : 1519389705090,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "7A5B77EF",
+        "caption" : "fitDat",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=fitDat&cache_key=7A5B77EF",
+        "displayedObservations" : "11",
+        "environment" : "",
+        "object" : "fitDat",
+        "preview" : "0",
+        "totalObservations" : "11",
+        "variables" : "21"
+    },
+    "relative_order" : 7,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}

@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "#'@name multigenerate\n#'@rdname multigenerate\n#'@aliases\n#'generate\n#'@title MultiGenerate\n#'@description\n#'Generates multiple functions with multiple parametres on same data you are able to adjust noise properties.\n#'\n#'@param origins lists of functions and their parametres\n#'@param levels  levels os stimulus\n#'@param trials  numbers of trials on each level of stimulus\n#'@param examplesPerFunction number of simulated sessions per one origin function, implicit value is 1\n#'\n#'@return data.frame with all values with distinguished origin functions and their parametres\nNULL\n#'@rdname multigenerate\n#'@export\n#'\n#'\nmultigenerate <- function(origins, levels, trials, examplesPerFunction=1)\n{\n  if(!is.list(origins)){\n    stop(\"Origins has to be a list.\")\n  }\n\n  if(length(levels) != length(trials)){\n    stop(\"Every level must have defined number of trials\")\n  }\n\n  results <- NULL\n\n  for(func in origins){\n    gama = as.integer(func[3])\n    lambda = as.integer(func[4])\n\n    if(gama < 0) {stop(\"Gamma must be a least 0.\")}\n    if(lambda < 0) {stop(\"Lambda must be a least 0.\")}\n    if((gama + lambda) > 1) {stop(\"Summ of gamma and lambda must be lesser than 1.\")}\n\n    if(is.character(func[1])){\n      sigmoidName <- func[1]\n    }else{\n      sigmoidName <- as.character(substitute(func[1]))\n    }\n\n    if(is.character(func[2])){\n      coreName <- func[2]\n    }else{\n      coreName <- as.character(substitute(func[2]))\n    }\n\n    xc <- do.call(paste(coreName , \".orig.cdf\", sep=\"\"), c(list(levels), list(func[5:length(func)])))\n    hits <- gama + (1 - gama - lambda) * do.call(paste(sigmoidName, \".orig.cdf\", sep=\"\"), list(xc))\n\n    responses <- data.frame(level = levels, obsNumber = trials, hitPercentage = hits)\n\n    for(i in 1:examplesPerFunction){\n      simulatedResp <- simulateResponse(responses)\n      simulatedResp <- processResponses(simulatedResp)\n      responses$simulatedHitPercentage <- simulatedResp$hitPercentage\n\n      responses$sigmoid <-  rep(func[1],nrow(responses))\n      responses$core <-  rep(func[2],nrow(responses))\n      responses$gamma <- rep(as.double(func[3]), nrow(responses))\n      responses$lambda <- rep(as.double(func[4]), nrow(responses))\n      for(i in 5:length(func))\n      {\n        responses[[paste(\"param\", as.character(i-4), sep=\"\")]] <-  rep(as.double(func[i]), nrow(responses))\n      }\n\n      if(is.null(results))\n      {\n        results <- nest(responses, c(level, obsNumber, hitPercentage, simulatedHitPercentage))\n      }else{\n        row <- nest(responses, c(level, obsNumber, hitPercentage, simulatedHitPercentage))\n        results <- bind_rows(results, row)\n      }\n    }\n  }\n  return(results)\n}\n",
+    "created" : 1513635937326.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "624609521",
+    "id" : "A8BB8223",
+    "lastKnownWriteTime" : 1519641847,
+    "last_content_update" : 1519641847705,
+    "path" : "~/Bakalarka/PsyMet/R/multigenerate.R",
+    "project_path" : "R/multigenerate.R",
+    "properties" : {
+        "source_window_id" : "",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

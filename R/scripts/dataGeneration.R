@@ -1,15 +1,15 @@
 #Data generation
 
-x <- log(1:5/1.2)
+x <- c(-log(2:5/1.2),log(1:5/1.2))
 
 #Multigenerate
 dat <- multigenerate(list(c("gumbel_r","ab", 0, 0, 0.5, 1),
-                          c("gumbel_l","ab", 0, 0, 0.5, 1),
-                          c("gauss","linear", 0, 0, 0.5, 1),
-                          c("logistic","linear", 0, 0, 0.5, 1))
-
-
-                     , x, rep(30,length(x)))
+                          c("gumbel_l","weibull", 0, 0, 0.5, 1),
+                          c("gauss","linear", 0, 0, 0.5, -0.5),
+                          c("logistic","linear", 0, 0, 0.5, 0.5))
+                     , x, rep(30,length(x)),
+                     100
+                     )
 
 #Multifit
 fitDat <-  multifit(dat, list(c("gumbel_l", "ab"), c("gauss", "linear"), c("logistic", "ab"), c("gumbel_l", "weibull")))
@@ -24,7 +24,22 @@ fitDat <- fitDat %>% group_by(sigmoid, core, gamma, lambda, param1, param2, fitS
 fitDat <- fitDat %>% group_by(sigmoid, core, gamma, lambda, param1, param2, fitSigmoid, fitCore, fitGamma, fitLambda, fitParam1, fitParam2) %>% mutate(fitTreshold=PSfunction(fitGamma, fitLambda, fitSigmoid, fitCore, 0.5, fitParam1, fitParam2, inverse = TRUE))
 #slope
 fitDat <- fitDat %>% group_by(sigmoid, core, gamma, lambda, param1, param2, fitSigmoid, fitCore, fitGamma, fitLambda, fitParam1, fitParam2) %>% mutate(fitSlope=PSfunction(fitGamma, fitLambda, fitSigmoid, fitCore, fitTreshold, fitParam1, fitParam2, type="pdf"))
-#number of levels
-fidDat <- fitDat %>% group_by(sigmoid, core, gamma, lambda, param1, param2, fitSigmoid, fitCore, fitGamma, fitLambda, fitParam1, fitParam2) %>% mutate(numberOfLevels=nrow(data))
-#number of observations
-#number of observations per level
+
+#adding variables numberOfLevels, numberOfObservations, numberOfObervationsPerLevel
+fitDat$numberOfLevels <- rep(NaN, nrow(fitDat))
+fitDat$numberOfObservations <- rep(NaN, nrow(fitDat))
+fitDat$meanOfObservationsPerLevel <- rep(NaN, nrow(fitDat))
+fitDat$meanTresholdLevelDistance <- rep(NaN, nrow(fitDat))
+for(i in 1:nrow(fitDat)){
+  dat <- fitDat[i,]$data[[1]]
+  #number of levels
+  fitDat[i,]$numberOfLevels <- nrow(dat)
+  #number of observations
+  fitDat[i,]$numberOfObservations <- sum(dat$obsNumber)
+  #number of observations per level
+  fitDat[i,]$meanOfObservationsPerLevel <- mean(dat$obsNumber)
+  #mean distance of treshold and level
+  tres <- fitDat[i,]$treshold[[1]]
+  fitDat[i,]$meanTresholdLevelDistance <- mean(abs(dat$level - tres))
+
+}

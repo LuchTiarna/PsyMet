@@ -72,6 +72,7 @@ multifit <- function(fitted, fitters)
       responses <- unnest(fitted[n,], data)
       responses$fitedHitPercentage <- predict(fit, responses$level)
 
+      responses$id <- rep(id, nrow(responses))
       responses$fitSigmoid <-  rep(fitter[1],nrow(responses))
       responses$fitCore <-  rep(fitter[2],nrow(responses))
 
