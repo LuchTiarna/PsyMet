@@ -5,7 +5,7 @@
 #' @return Returns table with row for every level specifing number of observations and hit percentage in every level.
 #' @export
 processResponses <- function(responseTable){
-  responseTable <- as.tibble(responseTable)
+  responseTable <- as_tibble(responseTable)
   generatedTable <-  group_by(responseTable, level) %>% summarize(obsNumber=n(), hitPercentage=mean(hit))
   return(as.data.frame(generatedTable))
 }

@@ -7,7 +7,7 @@
 #'@export
 
 simulateResponse <- function(dataTable){
-  dataTable <- as.tibble(dataTable)
+  dataTable <- as_tibble(dataTable)
   responseTable <- tibble(level = as.double(), hit = as.integer())
 
   for(rown in 1:nrow(dataTable)){

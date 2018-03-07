@@ -14,9 +14,9 @@ PSfunction <- function(gamma, lambda, sigmoid, core, x, ... , type="cdf", invers
   gamma <-  as.double(gamma)
   lambda <- as.double(lambda)
 
-  if(gamma < 0) {stop("Gamma must be a least 0.")}
-  if(lambda < 0) {stop("Lambda must be a least 0.")}
-  if((gamma + lambda) > 1) {stop("Summ of gamma and lambda must be lesser than 1.")}
+  if(gamma < 0) {warning("Gamma must be a least 0."); return(rep(NaN, length(x)))}
+  if(lambda < 0) {warning("Lambda must be a least 0."); return(rep(NaN, length(x)))}
+  if((gamma + lambda) > 1) {warning("Summ of gamma and lambda must be lesser than 1."); return(rep(NaN, length(x)))}
 
   if(is.character(sigmoid)){
     sigmoidName <- sigmoid
@@ -73,7 +73,7 @@ PSfunction <- function(gamma, lambda, sigmoid, core, x, ... , type="cdf", invers
     }
 
   } else {
-    stop("invalid function type, must be either cdf or pdf")
+    warning("invalid function type, must be either cdf or pdf");return(rep(NaN, length(x)))
   }
     return(y)
 }
