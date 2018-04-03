@@ -6,8 +6,9 @@
 #'@description
 #'Generates multiple functions with multiple parametres on same data you are able to adjust noise properties.
 #'
-#'@param dataList  list of data.frames with data to be fitted
-#'@param fitters list of fitting functions
+#'@param origins lists of functions and their parametres
+#'@param levels  levels stimuli
+#'@param trials
 #'
 #'@return data.frame with all values with distinguished origin functions and their parametres
 NULL
@@ -16,21 +17,27 @@ NULL
 #'
 #'
 
-multifit <- function(data, fitters)
+multifit <- function(fitted, fitters)
 {
   if(!is.list(fitters)){
     stop("Origins has to be a list.")
   }
 
+  #if(length(levels) != length(trials)){
+  #  stop("Every level must have defined number of trials")
+  #}
+
   results <- NULL
   id <- 0
 
+  for(n in 1:nrow(fitted)){
     for(fitter in fitters){
-      responses <- data
-      responses <- responses[complete.cases(responses),]
+      id <- id + 1
 
       params <- formals(fitter[[2]])
       params <- params[-1]
+
+      fitData <- fitted$data[[n]]
 
       if(is.character(fitter[[1]])){
         sigmoidName <- fitter[[1]]
@@ -55,17 +62,18 @@ multifit <- function(data, fitters)
 
       tryCatch({
         fit <- NULL
-        fit <- nls( formula = as.formula(fitFormula), data=responses, lower=c(gama=0, lambda=0),upper=c(gama = 1, lambda = 1), algorithm = "port")
+        fit <- nls( formula = as.formula(fitFormula), data=fitData, lower=c(gama=0, lambda=0),upper=c(gama = 1, lambda = 1), algorithm = "port")
       },error = function(e){fit <- NULL})
 
       if(is.null(fit)){
         next
       }
 
-      responses <- data
+      responses <- unnest(fitted[n,], data)
       responses <- responses[complete.cases(responses),]
       responses$fitedHitPercentage <- predict(fit, responses$level)
 
+      responses$id <- rep(id, nrow(responses))
       responses$fitSigmoid <-  rep(fitter[1],nrow(responses))
       responses$fitCore <-  rep(fitter[2],nrow(responses))
 
@@ -83,6 +91,7 @@ multifit <- function(data, fitters)
       }else{
         row <- nest(responses, c(level, obsNumber, hitPercentage, simulatedHitPercentage, fitedHitPercentage))
         results <-bind_rows(results, row)
+      }
       }
   }
   return(results)

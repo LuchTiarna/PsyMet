@@ -30,8 +30,8 @@ multigenerate <- function(origins, levels, trials, examplesPerFunction=1)
   results <- NULL
 
   for(func in origins){
-    gama = base::as.double(func[3])
-    lambda = base::as.double(func[4])
+    gama = as.integer(func[3])
+    lambda = as.integer(func[4])
 
     if(gama < 0) {stop("Gamma must be a least 0.")}
     if(lambda < 0) {stop("Lambda must be a least 0.")}
@@ -40,43 +40,40 @@ multigenerate <- function(origins, levels, trials, examplesPerFunction=1)
     if(is.character(func[1])){
       sigmoidName <- func[1]
     }else{
-      sigmoidName <- base::as.character(substitute(func[1]))
+      sigmoidName <- as.character(substitute(func[1]))
     }
 
     if(is.character(func[2])){
       coreName <- func[2]
     }else{
-      coreName <- base::as.character(substitute(func[2]))
+      coreName <- as.character(substitute(func[2]))
     }
 
-    xc <- base::do.call(paste(coreName , ".orig.cdf", sep=""), c(list(levels), list(func[5:length(func)])))
-    hits <- gama + (1 - gama - lambda) * base::do.call(paste(sigmoidName, ".orig.cdf", sep=""), list(xc))
+    xc <- do.call(paste(coreName , ".orig.cdf", sep=""), c(list(levels), list(func[5:length(func)])))
+    hits <- gama + (1 - gama - lambda) * do.call(paste(sigmoidName, ".orig.cdf", sep=""), list(xc))
 
     responses <- data.frame(level = levels, obsNumber = trials, hitPercentage = hits)
-    responses <- dplyr::distinct(dplyr::mutate(dplyr::group_by(responses, level), obsNumber=sum(obsNumber), hitPercentage=sum(hitPercentage*obsNumber)/sum(obsNumber)))
-    responses <- dplyr::ungroup(responses)
-    responses <- responses[order(responses$level),]
 
     for(i in 1:examplesPerFunction){
-      simulatedResp <- PsyMet::simulateResponse(responses)
-      simulatedResp <- PsyMet::processResponses(simulatedResp)
+      simulatedResp <- simulateResponse(responses)
+      simulatedResp <- processResponses(simulatedResp)
       responses$simulatedHitPercentage <- simulatedResp$hitPercentage
 
-      responses$sigmoid <-  base::rep(func[1],base::nrow(responses))
-      responses$core <-  base::rep(func[2],base::nrow(responses))
-      responses$gamma <- base::rep(base::as.double(func[3]), base::nrow(responses))
-      responses$lambda <- base::rep(base::as.double(func[4]), base::nrow(responses))
-      for(i in 5:base::length(func))
+      responses$sigmoid <-  rep(func[1],nrow(responses))
+      responses$core <-  rep(func[2],nrow(responses))
+      responses$gamma <- rep(as.double(func[3]), nrow(responses))
+      responses$lambda <- rep(as.double(func[4]), nrow(responses))
+      for(i in 5:length(func))
       {
-        responses[[base::paste("param", base::as.character(i-4), sep="")]] <-  base::rep(as.double(func[i]), base::nrow(responses))
+        responses[[paste("param", as.character(i-4), sep="")]] <-  rep(as.double(func[i]), nrow(responses))
       }
 
-      if(base::is.null(results))
+      if(is.null(results))
       {
-        results <- tidyr::nest(responses, c(level, obsNumber, hitPercentage, simulatedHitPercentage))
+        results <- nest(responses, c(level, obsNumber, hitPercentage, simulatedHitPercentage))
       }else{
-        row <- tidyr::nest(responses, c(level, obsNumber, hitPercentage, simulatedHitPercentage))
-        results <- dplyr::bind_rows(results, row)
+        row <- nest(responses, c(level, obsNumber, hitPercentage, simulatedHitPercentage))
+        results <- bind_rows(results, row)
       }
     }
   }
