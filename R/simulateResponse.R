@@ -7,12 +7,12 @@
 #'@export
 
 simulateResponse <- function(dataTable){
-  dataTable <- as_tibble(dataTable)
-  responseTable <- tibble(level = as.double(), hit = as.integer())
+  dataTable <- tibble::as_tibble(dataTable)
+  responseTable <- tibble::tibble(level = as.double(), hit = as.integer())
 
   for(rown in 1:nrow(dataTable)){
     if(dataTable[[rown,2]] >= 1){
-      responseTable <- add_row(responseTable,
+      responseTable <- tibble::add_row(responseTable,
                                level=dataTable[[rown,1]], hit=rbinom(dataTable[[rown,2]], 1,dataTable[[rown,3]]))
     }
   }
