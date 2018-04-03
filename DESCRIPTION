@@ -5,8 +5,8 @@ Version: 0.1.0
 Author: Pavel Mysicka
 Maintainer: Pavel Mysicka <pavelmysicka@seznam.cz>
 Description: Package for psychometric function manipulation
+Imports: dplyr, tibble, ggplot2, tidyr, bbmle
 License: What license is it under?
-Imports: tidyverse
 Encoding: UTF-8
 LazyData: true
 
